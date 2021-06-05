@@ -39,7 +39,7 @@ TURN_LEFT = robo.CODE_RSTurnLeft
 TURN_RIGHT = robo.CODE_RSTurnRight
 NO_OP = robo.CODE_RSNoOp
 BURP = robo.CODE_RSBurp
-ROAR = 0xCE
+ROAR = robo.CODE_RSRoar
 
 
 while(IS_RUNNING):
