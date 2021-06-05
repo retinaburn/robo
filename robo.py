@@ -52,22 +52,22 @@ class Robo(object):
 	
 	def create_code(self, code):
 		data = code
-		print(data)
+		#print(data)
 		wave = []
 		wave.append(self.wf_head)
 
 		for x in range(8):
 			if (data & 128 != 0):
 				wave.append(self.wf_hi)
-				print(1)
+				#print(1)
 			else:
 				wave.append(self.wf_lo)
-				print(0)
+				#print(0)
 			data <<= 1
 
 		wave.append(self.wf_tail)
 		print(wave)
-		print("end")
+		#print("end")
 		return wave
 
 	def send_wave(self, wave):
@@ -83,6 +83,8 @@ class Robo(object):
 		time.sleep(0.5)
 
 	def clean_up(self):
+                #If we dont set the pin to 0, then we can't power up the RS because
+                #it is getting a hot signal when the power button is pushed
 		self.pi.write(self.pin, 0)
 		self.pi.wave_clear()
 		self.pi.stop() # Disconnect from Pi.
