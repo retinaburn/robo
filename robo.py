@@ -24,6 +24,7 @@ CODE_RSStop            = 0x8E
 CODE_RSWakeUp          = 0xB1
 CODE_RSBurp            = 0xC2
 CODE_RSRightHandStrike = 0xC0
+CODE_RSRoar            = 0xCE
 CODE_RSNoOp            = 0xEF
 
 CYCLE = 833
