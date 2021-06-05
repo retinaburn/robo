@@ -24,23 +24,6 @@ http://www.aibohack.com/robosap/ir_codes.htm
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Bluetooth Notes
 sudo bash -c echo 1 > /sys/module/bluetooth/parameters/disable_ertm
 
