@@ -38,3 +38,4 @@ scan on
 connect 44:16:22:AC:A9:15
 trust 44:16:22:AC:A9:15
 
+Project Scorpio: 5C:BA:37:4E:32:05

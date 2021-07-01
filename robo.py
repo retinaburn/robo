@@ -6,26 +6,29 @@
 import time
 import pigpio # http://abyz.co.uk/rpi/pigpio/python.html
 
-CODE_RSTurnRight       = 0x80
-CODE_RSRightArmUp      = 0x81
-CODE_RSRightArmOut     = 0x82
-CODE_RSTiltBodyRight   = 0x83
-CODE_RSRightArmDown    = 0x84
-CODE_RSRightArmIn      = 0x85
-CODE_RSWalkForward     = 0x86
-CODE_RSWalkBackward    = 0x87
-CODE_RSTurnLeft        = 0x88
-CODE_RSLeftArmUp       = 0x89
-CODE_RSLeftArmOut      = 0x8A
-CODE_RSTiltBodyLeft    = 0x8B
-CODE_RSLeftArmDown     = 0x8C
-CODE_RSLeftArmIn       = 0x8D
-CODE_RSStop            = 0x8E
-CODE_RSWakeUp          = 0xB1
-CODE_RSBurp            = 0xC2
-CODE_RSRightHandStrike = 0xC0
-CODE_RSRoar            = 0xCE
-CODE_RSNoOp            = 0xEF
+CODE_RSTurnRight        = 0x80
+CODE_RSRightArmUp       = 0x81
+CODE_RSRightArmOut      = 0x82
+CODE_RSTiltBodyRight    = 0x83
+CODE_RSRightArmDown     = 0x84
+CODE_RSRightArmIn       = 0x85
+CODE_RSWalkForward      = 0x86
+CODE_RSWalkBackward     = 0x87
+CODE_RSTurnLeft         = 0x88
+CODE_RSLeftArmUp        = 0x89
+CODE_RSLeftArmOut       = 0x8A
+CODE_RSTiltBodyLeft     = 0x8B
+CODE_RSLeftArmDown      = 0x8C
+CODE_RSLeftArmIn        = 0x8D
+CODE_RSStop             = 0x8E
+CODE_RSRightHandPickup  = 0xA4
+CODE_RSLeftHandPickup   = 0xAC
+CODE_RSWakeUp           = 0xB1
+CODE_RSBurp             = 0xC2
+CODE_RSRightHandStrike  = 0xC0
+CODE_RSRoar             = 0xCE
+CODE_RSKarateChop       = 0xD6
+CODE_RSNoOp             = 0xEF
 
 CYCLE = 833
 

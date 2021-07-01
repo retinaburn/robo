@@ -22,29 +22,39 @@ joy = pygame.joystick.Joystick(0)
 joy.init()
 
 # Xbox Controller Definitions
-MENU_BUTTON = 7
-B_BUTTON = 1
-A_BUTTON = 0
-DPAD = JOYHATMOTION
-LEFTSTICK_UPDOWN = 1
-RIGHTSTICK_UPDOWN = 4
+MENU_BUTTON             = 7
+X_BUTTON                = 2
+B_BUTTON                = 1
+A_BUTTON                = 0
+DPAD                    = JOYHATMOTION
+LEFTSTICK_LEFTRIGHT     = 0
+LEFTSTICK_UPDOWN        = 1
+RIGHTSTICK_LEFTRIGHT    = 3
+RIGHTSTICK_UPDOWN       = 4
 
 # Input Loop Definitions
-IS_RUNNING = True
-DPAD_DOWN = False
-CODE = 0x00  #The last code sent to RS
-NEXT_CODE = 0x00 #The next code sent to RS
-FORWARD = robo.CODE_RSWalkForward
-BACKWARD = robo.CODE_RSWalkBackward
-TURN_LEFT = robo.CODE_RSTurnLeft
-TURN_RIGHT = robo.CODE_RSTurnRight
-NO_OP = robo.CODE_RSNoOp
-BURP = robo.CODE_RSBurp
-ROAR = robo.CODE_RSRoar
-RIGHTARM_UP = robo.CODE_RSRightArmUp
-RIGHTARM_DOWN = robo.CODE_RSRightArmDown
-LEFTARM_UP = robo.CODE_RSLeftArmUp
-LEFTARM_DOWN = robo.CODE_RSLeftArmDown
+IS_RUNNING      = True
+DPAD_DOWN       = False
+CODE            = 0x00  #The last code sent to RS
+NEXT_CODE       = 0x00 #The next code sent to RS
+
+# Robosapien codes
+FORWARD         = robo.CODE_RSWalkForward   #walk forward and back send 1 code and walking continues
+BACKWARD        = robo.CODE_RSWalkBackward  #until you send a no-op or stop
+TURN_LEFT       = robo.CODE_RSTurnLeft
+TURN_RIGHT      = robo.CODE_RSTurnRight
+NO_OP           = robo.CODE_RSNoOp
+BURP            = robo.CODE_RSBurp
+ROAR            = robo.CODE_RSRoar
+KARATE          = robo.CODE_RSKarateChop
+RIGHTARM_UP     = robo.CODE_RSRightArmUp    #arm codes work different than the forward and back
+RIGHTARM_DOWN   = robo.CODE_RSRightArmDown  #these you can send multiple times and get different positions
+RIGHTARM_OUT    = robo.CODE_RSRightArmOut
+RIGHTARM_IN     = robo.CODE_RSRightArmIn
+LEFTARM_UP      = robo.CODE_RSLeftArmUp
+LEFTARM_DOWN    = robo.CODE_RSLeftArmDown
+LEFTARM_OUT     = robo.CODE_RSLeftArmOut
+LEFTARM_IN      = robo.CODE_RSLeftArmIn
 
 
 # Controller Tweaks for Responsiveness Definitions
@@ -72,36 +82,60 @@ while(IS_RUNNING):
             if (event.value > DEAD_ZONE or event.value < (-1*DEAD_ZONE)):
                 #print("Last Joy Event: {} + Dedup Interval {} = {} < {} is {}".format(LAST_JOY_EVENT, JOY_EVENT_DEDUP, (LAST_JOY_EVENT + JOY_EVENT_DEDUP), currentTime,((LAST_JOY_EVENT + JOY_EVENT_DEDUP) < currentTime)))
                 currentTime = time.time()
-                if event.axis == RIGHTSTICK_UPDOWN:
+
+                # Right Arm Control
+                if event.axis == RIGHTSTICK_UPDOWN or event.axis == RIGHTSTICK_LEFTRIGHT:
                     if (LAST_RIGHT_JOY_EVENT + JOY_EVENT_DEDUP) < currentTime:
                         LAST_RIGHT_JOY_EVENT = currentTime
                         if event.value > DEAD_ZONE: 
                             log_event(event)
-                            print("Right - Down")
-                            myrobo.send_code(RIGHTARM_DOWN)
+                            if event.axis == RIGHTSTICK_UPDOWN:
+                                print("Right - Down")
+                                myrobo.send_code(RIGHTARM_DOWN)
+                            elif event.axis == RIGHTSTICK_LEFTRIGHT:
+                                print("Right - Out")
+                                myrobo.send_code(RIGHTARM_OUT)
                         elif event.value < (-1*DEAD_ZONE): 
                             log_event(event)
-                            print("Right - Up")
-                            myrobo.send_code(RIGHTARM_UP)
+                            if event.axis == RIGHTSTICK_UPDOWN:
+                                print("Right - Up")
+                                myrobo.send_code(RIGHTARM_UP)
+                            elif event.axis == RIGHTSTICK_LEFTRIGHT:
+                                print("Right - In")
+                                myrobo.send_code(RIGHTARM_IN)
                         else:
                             print("Zeroed")
-                elif event.axis == LEFTSTICK_UPDOWN:
+
+                # Left Arm Control
+                elif event.axis == LEFTSTICK_UPDOWN or event.axis == LEFTSTICK_LEFTRIGHT:
                     if (LAST_LEFT_JOY_EVENT + JOY_EVENT_DEDUP) < currentTime:
                         LAST_LEFT_JOY_EVENT = currentTime
                         if event.value > DEAD_ZONE: 
                             log_event(event)
-                            print("Left - Down")
-                            myrobo.send_code(LEFTARM_DOWN)
+                            if event.axis == LEFTSTICK_UPDOWN:
+                                print("Left - Down")
+                                myrobo.send_code(LEFTARM_DOWN)
+                            elif event.axis == LEFTSTICK_LEFTRIGHT:
+                                print("Left - In")
+                                myrobo.send_code(LEFTARM_IN)
                         elif event.value < (-1*DEAD_ZONE): 
                             log_event(event)
-                            print("Left - Up")
-                            myrobo.send_code(LEFTARM_UP)
+                            if event.axis == LEFTSTICK_UPDOWN:
+                                print("Left - Up")
+                                myrobo.send_code(LEFTARM_UP)
+                            elif event.axis == LEFTSTICK_LEFTRIGHT:
+                                print("Left - Out")
+                                myrobo.send_code(LEFTARM_OUT)
+
                         else:
                             print("Zeroed")
-        if event.type == JOYBUTTONUP and event.button == B_BUTTON:
-            myrobo.send_code(BURP)
-        if event.type == JOYBUTTONUP and event.button == A_BUTTON:
-            myrobo.send_code(ROAR)
+        if event.type == JOYBUTTONUP:
+            if event.button == B_BUTTON:
+                myrobo.send_code(BURP)
+            elif event.button == A_BUTTON:
+                myrobo.send_code(ROAR)
+            elif event.button == X_BUTTON:
+                myrobo.send_code(KARATE)
         if event.type == DPAD:
             if event.value == (0,0):
                 DPAD_DOWN = False
